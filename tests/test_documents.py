@@ -1,4 +1,5 @@
 """Artifact reader contracts: no scans, no source writes, explicit roots and static HTML."""
+import base64
 import http.client
 import json
 import os
@@ -75,6 +76,45 @@ class DocumentTests(unittest.TestCase):
         self.assertNotIn('allow-scripts',wrapper);self.assertNotIn('allow-same-origin',wrapper)
         image=self.root/'chart.png';image.write_bytes(b'\x89PNG\r\n\x1a\nfixture')
         status,body,h=self.get('/files/raw/0/chart.png');self.assertEqual(status,200);self.assertEqual(body,image.read_bytes());self.assertEqual(h['Content-Type'],'image/png')
+    def test_embedded_raster_reports_and_large_preview(self):
+        # Self-contained galleries can exceed the old 4 MiB limit.
+        png=b'\x89PNG\r\n\x1a\n'+b'x'*(4*1024*1024)
+        data_url='data:image/png;base64,'+base64.b64encode(png).decode()
+        source='<h1>Gallery</h1><img src="'+data_url+'" onerror="BAD_EVENT"><script>BAD_SCRIPT</script>'
+        self.html.write_text(source);before=self.html.read_bytes();mtime=self.html.stat().st_mtime_ns
+        status,body,_=self.api(self.html,preview='1');self.assertEqual(status,200)
+        preview=json.loads(body);self.assertIsNone(preview['text']);self.assertEqual(preview['images'],[])
+        self.assertLess(len(body),4096,'Preview JSON must not duplicate embedded images or HTML source')
+        status,body,headers=self.get(preview['raw_url']);self.assertEqual(status,200)
+        self.assertIn(data_url,body.decode());self.assertNotIn('BAD_EVENT',body.decode());self.assertNotIn('BAD_SCRIPT',body.decode())
+        self.assertIn("script-src 'none'",headers['Content-Security-Policy'])
+        source_data=json.loads(self.api(self.html)[1]);self.assertEqual(source_data['text'],source)
+        self.assertEqual(self.html.read_bytes(),before);self.assertEqual(self.html.stat().st_mtime_ns,mtime)
+        with self.html.open('wb') as out:out.truncate(32*1024*1024+1)
+        self.assertEqual(self.api(self.html,preview='1')[0],413)
+
+    def test_inline_images_reject_active_mismatched_and_invalid_data(self):
+        valid={
+            'png':b'\x89PNG\r\n\x1a\nfixture',
+            'jpeg':b'\xff\xd8\xfffixture',
+            'gif':b'GIF89afixture',
+            'webp':b'RIFF0000WEBPfixture',
+        }
+        good=['data:image/'+kind+';base64,'+base64.b64encode(data).decode() for kind,data in valid.items()]
+        bad=['data:image/svg+xml;base64,'+base64.b64encode(b'<svg onload="BAD"/>').decode(),
+             'data:text/html;base64,PHNjcmlwdD4=', 'data:image/png;base64,INVALID!',
+             'data:image/png;base64,'+base64.b64encode(b'<script>BAD</script>').decode(),
+             'javascript:BAD', 'https://evil.example/image.png']
+        self.html.write_text(''.join('<img src="'+url+'">' for url in good+bad)+'<a href="'+good[0]+'">Image URL</a>')
+        status,body,_=self.get('/files/raw/0/index.html');self.assertEqual(status,200);text=body.decode()
+        self.assertEqual(text.count('<img '),len(good));self.assertNotIn('<a href=',text)
+        for url in good:self.assertIn(url,text)
+        for url in bad:self.assertNotIn(url,text)
+        # Local image navigation remains available with a small preview response.
+        self.html.write_text('<img src="chart.png"><img src="'+good[0]+'">')
+        status,body,_=self.api(self.html,preview='1');self.assertEqual(status,200)
+        self.assertEqual(len(json.loads(body)['images']),1)
+
     def test_encoded_paths_and_invalid_text(self):
         d=json.loads(self.api(self.md)[1]);self.assertEqual(self.get(d['raw_url'])[0],200)
         nested=self.root/'子目录';nested.mkdir();(nested/'index.html').write_text('<img src="../chart.png"><img src="../../outside.png"><img src="https://evil.example/a.png">')

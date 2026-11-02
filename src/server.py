@@ -7,7 +7,7 @@ from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-VERSION='6.3.0-dev.6'
+VERSION='6.3.0-dev.7'
 MIN_PY=(3,7)
 if sys.version_info < MIN_PY:
     raise SystemExit('CodexView requires Python >= 3.7; current: %s' % sys.version.split()[0])
@@ -607,7 +607,8 @@ class App:
                             try:text=data.decode('utf-8-sig')
                             except UnicodeDecodeError:raise ReportError('Report must use UTF-8 text.',415)
                             if info['kind']=='html':
-                                parser=StaticReport(info['raw_url']);parser.feed(text);info['images']=[url for url in (report_navigation(app.files,target,context_sid,context_task) for target in parser.images) if url]
+                                parser=StaticReport(info['raw_url'],images_only=True);parser.feed(text);parser.close();info['images']=[url for url in (report_navigation(app.files,target,context_sid,context_task) for target in parser.images) if url]
+                                if (qs.get('preview') or [''])[0]=='1':text=None
                             return self.jsonx(dict(info,text=text))
                         if info['kind']=='html':
                             try:data=static_report(data.decode('utf-8-sig'),info['raw_url'],lambda target: report_navigation(app.files,target,context_sid,context_task))

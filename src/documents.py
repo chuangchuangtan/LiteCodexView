@@ -1,6 +1,7 @@
 """Opt-in, bounded, read-only access to generated reports. No directory scanning."""
 import posixpath
 import stat
+import base64
 from html.parser import HTMLParser
 
 DOCUMENT_TYPES={'.md':'text/plain; charset=utf-8','.markdown':'text/plain; charset=utf-8',
@@ -50,7 +51,7 @@ class ReportFiles:
         index,rel,path=self.locate(value,sid,store)
         suffix=path.suffix.lower();types=VIEW_TYPES if document else dict(DOCUMENT_TYPES,**RESOURCE_TYPES)
         if suffix not in types:raise ReportError('Only Markdown, HTML, CSS and supported raster images can be read.',415)
-        limit=(2 if suffix in ('.md','.markdown') else 4 if suffix in ('.html','.htm') else 1 if suffix=='.css' else 16)*1024*1024
+        limit=(2 if suffix in ('.md','.markdown') else 32 if suffix in ('.html','.htm') else 1 if suffix=='.css' else 16)*1024*1024
         # Walk from / using directory descriptors: no symlink or FIFO/device traversal,
         # including parent replacement between checking a path and opening the file.
         fd=None
@@ -90,8 +91,19 @@ class StaticReport(HTMLParser):
     void={'img','br','hr','link','col'}
     blocked={'script','iframe','object','embed','svg','math','template','noscript','textarea','xmp','plaintext'}
     attrs=set('id class title style lang dir role alt width height colspan rowspan scope datetime start reversed open media'.split())
-    def __init__(self,raw_url,document_link=None):self.document_link=document_link;super().__init__(convert_charrefs=True);self.base=raw_url;self.images=[];self.out=[];self.skip=[];self.in_style=False
+    def __init__(self,raw_url,document_link=None,images_only=False):self.document_link=document_link;super().__init__(convert_charrefs=True);self.base=raw_url;self.images=[];self.out=[];self.skip=[];self.in_style=False;self.images_only=images_only
     def url(self,value,kind):
+        if value.lower().startswith('data:'):
+            if kind!='asset':return None
+            match=re.fullmatch(r'data:image/(png|jpeg|gif|webp);base64,([A-Za-z0-9+/]+={0,2})',value,re.I)
+            if not match or len(match.group(2))>4*((16*1024*1024+2)//3):return None
+            try:data=base64.b64decode(match.group(2),validate=True)
+            except ValueError:return None
+            if len(data)>16*1024*1024:return None
+            kind=match.group(1).lower()
+            valid={'png':data.startswith(b'\x89PNG\r\n\x1a\n'),'jpeg':data.startswith(b'\xff\xd8\xff'),
+                   'gif':data.startswith((b'GIF87a',b'GIF89a')),'webp':data.startswith(b'RIFF') and data[8:12]==b'WEBP'}
+            return value if valid[kind] else None
         u=urllib.parse.urlsplit(value)
         if u.scheme or u.netloc or u.query or '\\' in value:return None
         if not u.path:return '#'+urllib.parse.quote(u.fragment) if u.fragment and kind=='link' else None
@@ -111,6 +123,13 @@ class StaticReport(HTMLParser):
             if tag!='embed':self.skip.append(tag)
             return
         if tag not in self.tags:return
+        if self.images_only:
+            if tag=='img' and len(self.images)<80:
+                value=dict(attrs).get('src') or ''
+                if not value.lower().startswith('data:'):
+                    src=self.url(value,'asset')
+                    if src and Path(urllib.parse.urlsplit(src).path).suffix.lower() in IMAGE_TYPES:self.images.append(src)
+            return
         if tag=='style':self.in_style=True
         values=dict(attrs);clean=[]
         for name,value in attrs:
@@ -120,7 +139,7 @@ class StaticReport(HTMLParser):
         if tag=='img':
             src=self.url(values.get('src',''),'asset')
             if not src:return
-            if Path(urllib.parse.urlsplit(src).path).suffix.lower() in IMAGE_TYPES and len(self.images)<80:self.images.append(src)
+            if not src.lower().startswith('data:') and Path(urllib.parse.urlsplit(src).path).suffix.lower() in IMAGE_TYPES and len(self.images)<80:self.images.append(src)
             clean.extend([('src',src),('loading','lazy'),('decoding','async')])
         elif tag=='a':
             href=self.url(values.get('href',''),'link')
@@ -141,10 +160,11 @@ class StaticReport(HTMLParser):
         if self.skip:
             if tag==self.skip[-1]:self.skip.pop()
             return
+        if self.images_only:return
         if tag=='style':self.in_style=False
         if tag in self.tags and tag not in self.void:self.out.append('</'+tag+'>')
     def handle_data(self,data):
-        if not self.skip:self.out.append(data if self.in_style else html.escape(data))
+        if not self.skip and not self.images_only:self.out.append(data if self.in_style else html.escape(data))
 
 def static_report(text,raw_url,document_link=None):
     parser=StaticReport(raw_url,document_link);parser.feed(text);parser.close()

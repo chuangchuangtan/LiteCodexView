@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.3.0-dev.7 — 2026-11-02 (unreleased)
+
+- Read self-contained HTML galleries up to 32 MiB; retain validated base64 PNG/JPEG/GIF/WebP images with a 16 MiB decoded image limit.
+- Keep HTML source out of preview JSON and fetch it only when Source is selected; preserve local-image navigation and sandbox restrictions.
+- Reject SVG/HTML data URLs, invalid base64, mismatched image signatures, scripts and out-of-root files.
+- Report files remain on demand and read-only; session discovery and indexing are unchanged.
+
 ## 6.3.0-dev.6 — 2026-11-02 (unreleased)
 
 - Wrap long fenced text, JSON strings and unbroken tokens within the reader; retain source newlines, indentation and copy text.
