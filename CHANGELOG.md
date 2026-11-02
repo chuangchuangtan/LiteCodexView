@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.3.0-dev.6 — 2026-11-02 (unreleased)
+
+- Wrap long fenced text, JSON strings and unbroken tokens within the reader; retain source newlines, indentation and copy text.
+- Keep diff lines aligned with horizontal scrolling confined to the code block.
+- Resolve conversation styles overriding code-block overflow. Applies to both user and assistant messages; Markdown reports share the wrap rule.
+- No new runtime dependencies, requests or changes to native session discovery/indexing.
+
 ## 6.3.0-dev.5 — 2026-10-25 (Asia/Shanghai) — task window repair
 
 - Route task insertion/removal through one idempotent window commit; reuse mounted IDs and reject superseded prefetches.

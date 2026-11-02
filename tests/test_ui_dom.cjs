@@ -26,6 +26,21 @@ function event(node,type,x){node.dispatchEvent(new w.MouseEvent(type,{bubbles:tr
 (async()=>{
  await wait(()=>doc.querySelectorAll('.task').length===3);assert.equal(doc.querySelector('.session-loading'),null);assert.equal(doc.querySelector('#tasknav .navcount').textContent,'2 / 3');
  assert.equal(doc.querySelector('.task-time').getAttribute('datetime'),'2026-10-16T02:34:56.000Z');assert.ok(doc.querySelector('.task-time').textContent.includes('2026'));
+ // Long fenced prose must wrap inside both conversation roles, without changing copy text.
+ const longText='Inspect the whole image. '.repeat(30)+'\n  '+('long_token_'.repeat(70));
+ for(const role of ['user','assistant']){
+  const payload=doc.querySelector('.sec.'+role+' .payload');
+  const fixture=doc.createElement('div');fixture.className='md';
+  fixture.innerHTML=w.mdRender('```text\n'+longText+'\n```\n\n```json\n{\n  "reasoning": "'+longText.split('\n')[0]+'"\n}\n```\n\n```diff\n+ '+longText.split('\n')[0]+'\n```');payload.append(fixture);
+  for(const pre of fixture.querySelectorAll('.code-shell pre')){
+   assert.equal(w.getComputedStyle(pre).whiteSpace,'pre-wrap','Long fenced text must wrap in '+role+' messages');
+   assert.equal(w.getComputedStyle(pre).overflowWrap,'anywhere','Unbroken tokens must stay inside the reader');
+   assert.equal(w.getComputedStyle(pre).overflow,'auto','Message rules must not let code overflow visibly');
+  }
+  assert.equal(fixture.querySelector('pre code').textContent,longText,'Wrapping must preserve original newlines, indentation and copy text');
+  const diff=fixture.querySelector('pre.diff');assert.equal(w.getComputedStyle(diff).whiteSpace,'pre','Diff alignment must retain original lines');assert.equal(w.getComputedStyle(diff).overflow,'auto','Diff overflow must remain local');
+  fixture.remove();
+ }
  const count=calls.length;w.dispatchEvent(new w.Event('scroll'));await new Promise(r=>setTimeout(r,50));assert.equal(calls.length,count,'Programmatic/layout scroll must not navigate');
  doc.querySelector('#searchSession').click();doc.querySelector('#sessionSearchInput').value='permission denied';doc.querySelector('#sessionSearchInput').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
  await wait(()=>doc.querySelector('.sresult'));doc.querySelector('.sresult').click();await wait(()=>doc.querySelector('.exact-search-hit'));
