@@ -51,7 +51,7 @@ class ReportFiles:
         index,rel,path=self.locate(value,sid,store)
         suffix=path.suffix.lower();types=VIEW_TYPES if document else dict(DOCUMENT_TYPES,**RESOURCE_TYPES)
         if suffix not in types:raise ReportError('Only Markdown, HTML, CSS and supported raster images can be read.',415)
-        limit=(2 if suffix in ('.md','.markdown') else 32 if suffix in ('.html','.htm') else 1 if suffix=='.css' else 16)*1024*1024
+        limit=(2 if suffix in ('.md','.markdown') else 50 if suffix in ('.html','.htm') else 1 if suffix=='.css' else 16)*1024*1024
         # Walk from / using directory descriptors: no symlink or FIFO/device traversal,
         # including parent replacement between checking a path and opening the file.
         fd=None

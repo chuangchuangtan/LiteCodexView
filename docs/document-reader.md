@@ -2,7 +2,7 @@
 
 Download the matching [6.3.0-dev.5 preview](https://github.com/chuangchuangtan/codexview/releases/tag/v6.3.0-dev.5). The published 6.2.1 files remain available as the previous stable baseline.
 
-Last updated: 2026-11-02 (Asia/Shanghai). The large-report changes below describe the 6.3.0-dev.7 development build; the published download above is the earlier preview.
+Last updated: 2026-11-03 (Asia/Shanghai). The large-report changes below describe the 6.3.0-dev.8 development build; the published download above is the earlier preview.
 
 Codex sessions often point to Markdown reports and HTML galleries saved on the server. Open these links in a separate browser tab while keeping the conversation available. Markdown supports headings, tables, code blocks and local report links. HTML uses an isolated, static preview; Read / Source and Refresh are available in the surrounding reader.
 
@@ -32,7 +32,7 @@ Task density and reading-width presets are available in More actions. Sidebar an
 - Local static resources: CSS, PNG, JPEG, GIF, WebP and ICO. Approved local Markdown/HTML links in HTML open the current file in the outer reader after a user click; filename, Source and Refresh all follow that file. Same-page anchors stay in the preview. The return link retains the originating session and task.
 - HTML sanitization removes active elements and URL-bearing attributes except approved local report/resource references and validated base64 PNG/JPEG/GIF/WebP images (maximum 16 MiB decoded per image). SVG and HTML data URLs remain blocked. Scripts, forms, embedded frames, external resources and network APIs are disabled by a response CSP and an iframe sandbox. Only user-activated top navigation is permitted so approved document links can reach the outer reader. Scripts and same-origin privileges remain disabled. Direct visits to the raw HTML endpoint also receive the restrictive sandbox CSP.
 - JavaScript applications, interactive charts, inline SVG and external fonts/assets are not supported by static preview. The original source is available as escaped text.
-- Preview limits: Markdown 2 MiB, HTML 32 MiB, CSS 1 MiB and each raster image 16 MiB. Oversize files produce an explicit error; contents are never silently truncated.
+- Preview limits: Markdown 2 MiB, HTML 50 MiB, CSS 1 MiB and each raster image 16 MiB. Oversize files produce an explicit error; contents are never silently truncated.
 - Refresh reads saved content on demand. It does not follow unsaved editor buffers.
 
 The report reader adds no third-party runtime dependencies or report scans to session indexing. Version 6.3.0-dev.5 also adds optional search acceleration independently of report loading.
@@ -43,4 +43,6 @@ Sandbox references: [MDN iframe](https://developer.mozilla.org/en-US/docs/Web/HT
 
 ### Large self-contained HTML reports
 
-HTML reports up to 32 MiB can include base64 raster images. They open only on demand; session discovery, manifests and task reading do not read reports. Preview responses omit the full HTML source, which is delivered through the sandboxed report route. Selecting **Source** fetches and caches the source text separately. The local-image list collects paths without building another sanitized document or returning embedded images in the JSON response. Scripts, forms, external requests and same-origin iframe privileges remain disabled. Files above the limit show an explicit error.
+HTML reports up to 50 MiB can include base64 raster images. They open only on demand; session discovery, manifests and task reading do not read reports. Preview responses omit the full HTML source, which is delivered through the sandboxed report route. Selecting **Source** fetches and caches the source text separately. The local-image list collects paths without building another sanitized document or returning embedded images in the JSON response. Scripts, forms, external requests and same-origin iframe privileges remain disabled. Files above the limit show an explicit error.
+
+The 50 MiB HTML limit is 52,428,800 bytes and includes base64 data embedded in the HTML file. It applies equally to `.html`/`.htm` preview, Source and raw report routes. Each embedded raster image retains its 16 MiB decoded limit.

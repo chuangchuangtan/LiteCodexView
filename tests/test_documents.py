@@ -90,7 +90,7 @@ class DocumentTests(unittest.TestCase):
         self.assertIn("script-src 'none'",headers['Content-Security-Policy'])
         source_data=json.loads(self.api(self.html)[1]);self.assertEqual(source_data['text'],source)
         self.assertEqual(self.html.read_bytes(),before);self.assertEqual(self.html.stat().st_mtime_ns,mtime)
-        with self.html.open('wb') as out:out.truncate(32*1024*1024+1)
+        with self.html.open('wb') as out:out.truncate(50*1024*1024+1)
         self.assertEqual(self.api(self.html,preview='1')[0],413)
 
     def test_inline_images_reject_active_mismatched_and_invalid_data(self):

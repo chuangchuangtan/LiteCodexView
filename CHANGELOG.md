@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.3.0-dev.8 — 2026-11-03 (unreleased)
+
+- Raise the HTML/HTM preview limit from 32 MiB to 50 MiB (52,428,800 bytes), including embedded base64 image data.
+- Preserve on-demand report loading, the 16 MiB decoded raster-image limit, source read-only checks and static HTML isolation.
+
 ## 6.3.0-dev.7 — 2026-11-02 (unreleased)
 
 - Read self-contained HTML galleries up to 32 MiB; retain validated base64 PNG/JPEG/GIF/WebP images with a 16 MiB decoded image limit.
