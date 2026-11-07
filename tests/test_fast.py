@@ -2,7 +2,7 @@ import json, pathlib, tempfile, time, unittest, hashlib, threading, os
 
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 NS={'__name__':'test_fast_module'}
-exec(compile((ROOT/os.environ.get('CODEXVIEW_TEST_SOURCE','codexview')).read_text(),'fast','exec'),NS)
+exec(compile((ROOT/os.environ.get('CODEXVIEW_TEST_SOURCE','litecodexview')).read_text(),'fast','exec'),NS)
 SID='12345678-1234-1234-1234-123456789abc'
 def record(role,text):
     return (json.dumps({'type':'response_item','payload':{'type':'message','role':role,'content':[{'text':text}]}},ensure_ascii=False)+'\n').encode()

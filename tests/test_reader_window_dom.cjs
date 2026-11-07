@@ -1,6 +1,6 @@
 // Unequal task heights, scroll clamping, replayed inserts and delayed responses.
 const {JSDOM,VirtualConsole}=require('jsdom');const {spawnSync}=require('node:child_process');const assert=require('node:assert/strict');
-const source=process.env.CODEXVIEW_TEST_SOURCE||'codexview';const built=spawnSync('python3',['-c',`import runpy; n=runpy.run_path(${JSON.stringify(source)},run_name='test'); print(n['workspace_html']('window',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))`],{encoding:'utf8'});assert.equal(built.status,0,built.stderr);
+const source=process.env.CODEXVIEW_TEST_SOURCE||'litecodexview';const built=spawnSync('python3',['-c',`import runpy; n=runpy.run_path(${JSON.stringify(source)},run_name='test'); print(n['workspace_html']('window',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))`],{encoding:'utf8'});assert.equal(built.status,0,built.stderr);
 const tasks=Array.from({length:842},(_,i)=>({id:'t'+(i+1),n:i+1,title:'Unique task '+(i+1),sections:[]}));let scroll=0,metadataDelay=0,payloadDelay=0,aborts=0,errors=[];
 const bodyHeights={t829:2000,t830:900,t831:2200,t832:500,t833:3200};
 function height(node){if(node?.classList.contains('task')){let loaded=[...node.querySelectorAll('.sec .payload')].every(n=>n.dataset.loaded);return Math.max(parseFloat(node.style.minHeight)||0,loaded?(bodyHeights[node.dataset.id]||650):190)}return parseFloat(node?.style?.height)||0}

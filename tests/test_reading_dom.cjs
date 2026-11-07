@@ -1,5 +1,5 @@
 const {JSDOM,VirtualConsole}=require('jsdom');const {spawnSync}=require('node:child_process');const assert=require('node:assert/strict');
-const response=spawnSync('python3',['-c',"import runpy; n=runpy.run_path('codexview',run_name='test'); print(n['workspace_html']('reading-fixture',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))"],{encoding:'utf8'});assert.equal(response.status,0,response.stderr);
+const response=spawnSync('python3',['-c',"import runpy; n=runpy.run_path('litecodexview',run_name='test'); print(n['workspace_html']('reading-fixture',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))"],{encoding:'utf8'});assert.equal(response.status,0,response.stderr);
 const key='codexviewReading:reading-fixture';const saved={v:1,sid:'reading-fixture',task:'b',n:2,generation:'g1',section:1,page:0,anchor:'Middle paragraph',top:50};
 const tasks=['a','b','c'].map((id,i)=>({id,n:i+1,title:'Task '+(i+1),sections:[]}));
 async function boot(url,bookmark,reload=false){

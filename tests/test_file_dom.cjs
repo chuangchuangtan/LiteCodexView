@@ -1,6 +1,6 @@
 const {JSDOM,VirtualConsole}=require('jsdom');
 const {spawnSync}=require('node:child_process');const assert=require('node:assert/strict');
-const html=spawnSync('python3',['-c',"import runpy; n=runpy.run_path('codexview',run_name='test'); print(n['document_html']('/reports/report.md','fixture','2'))"],{encoding:'utf8'});
+const html=spawnSync('python3',['-c',"import runpy; n=runpy.run_path('litecodexview',run_name='test'); print(n['document_html']('/reports/report.md','fixture','2'))"],{encoding:'utf8'});
 assert.equal(html.status,0,html.stderr);let calls=[],errors=[],mode='markdown',fail=false;
 const vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!e.message.includes('CSS')&&!e.message.includes('iframe'))errors.push(e.message)});
 const dom=new JSDOM(html.stdout,{url:'http://fixture/file?path=/reports/report.md',runScripts:'dangerously',virtualConsole:vc,beforeParse(w){w.AbortController=AbortController;w.fetch=async url=>{calls.push(url);return {ok:!fail,json:async()=>fail?{error:'Report not found on this server.'}:{kind:mode,name:'report.md',path:'/reports/report.md',size:32,text:mode==='html'?(url.includes('preview=1')?null:'<script>BAD</script>'):'# Report\n\n[Next](next.html)\n\n<script>BAD</script>',images:['/file?path=%2Freports%2Ffigure.png&sid=fixture'],raw_url:'/files/raw/0/index.html'}}}}});

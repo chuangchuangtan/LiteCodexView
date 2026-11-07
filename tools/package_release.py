@@ -11,7 +11,7 @@ import zipfile
 from build import build, ROOT
 
 FILES = [
-    'codexview', 'README.md', 'README.zh-CN.md', 'LICENSE', 'SECURITY.md',
+    'litecodexview', 'README.md', 'README.zh-CN.md', 'LICENSE', 'SECURITY.md',
     'CONTRIBUTING.md', 'CHANGELOG.md', 'package.json', 'package-lock.json',
     '.gitignore', 'tools/build.py', 'tools/package_release.py', 'tools/benchmark.py', 'tools/demo.py',
 ]
@@ -44,7 +44,7 @@ def package():
                    if isinstance(node, ast.Assign) and any(
                        isinstance(target, ast.Name) and target.id == 'VERSION'
                        for target in node.targets))
-    prefix = 'codexview-' + version
+    prefix = 'litecodexview-' + version
     files = public_files()
     dist = ROOT / 'dist'
     if dist.is_symlink():

@@ -8,7 +8,7 @@ const result=spawnSync(python,['-c',`
 import pathlib,json,re
 n={'__name__':'frontend_test'}
 import os
-exec(compile(pathlib.Path(os.environ.get('CODEXVIEW_TEST_SOURCE','codexview')).read_text(),'fast','exec'),n)
+exec(compile(pathlib.Path(os.environ.get('CODEXVIEW_TEST_SOURCE','litecodexview')).read_text(),'fast','exec'),n)
 home=n['index_html']('/tmp')
 workspace=n['workspace_html']('test',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[])
 print(json.dumps([re.findall(r'<script>(.*?)</script>',x,re.S)[0] for x in (home,workspace)]))

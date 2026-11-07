@@ -1,6 +1,6 @@
 // Geometry regression: a pending payload must not rewind ongoing user scroll.
 const {JSDOM,VirtualConsole}=require('jsdom');const {spawnSync}=require('node:child_process');const assert=require('node:assert/strict');
-const result=spawnSync('python3',['-c',"import runpy; n=runpy.run_path('codexview',run_name='test'); print(n['workspace_html']('continuous',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))"],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);
+const result=spawnSync('python3',['-c',"import runpy; n=runpy.run_path('litecodexview',run_name='test'); print(n['workspace_html']('continuous',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))"],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);
 let tasks=Array.from({length:12},(_,i)=>({id:'task'+i,n:i+1,title:'Task '+(i+1),sections:[]})),scroll=0,delay=0,source='one',calls=[],errors=[],hidden=false,seeks=[];
 let vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!e.message.includes('CSS'))errors.push(e.message)});
 function height(n){if(n?.classList.contains('task'))return 600;return parseFloat(n?.style?.height)||0}

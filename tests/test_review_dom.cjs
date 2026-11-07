@@ -1,6 +1,6 @@
 // Actual UI events must reach review writes; saving must not reload the reader.
 const {JSDOM,VirtualConsole}=require('jsdom');const {spawnSync}=require('node:child_process');const assert=require('node:assert/strict');
-const source=process.env.CODEXVIEW_TEST_SOURCE||'codexview';
+const source=process.env.CODEXVIEW_TEST_SOURCE||'litecodexview';
 const html=spawnSync('python3',['-c',`import runpy; n=runpy.run_path(${JSON.stringify(source)},run_name='test'); print(n['workspace_html']('review',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))`],{encoding:'utf8'});assert.equal(html.status,0,html.stderr);
 const tasks=['a','b','c'].map((id,i)=>({id,n:i+1,title:'Task '+(i+1),sections:[]}));let state={tasks:{a:{note:'Keep this note'}},baseline_file:'fixture'},calls=[],failure='',active=0,maxActive=0,delay=0;
 const copy=x=>JSON.parse(JSON.stringify(x)),wait=async predicate=>{for(let i=0;i<200;i++){if(predicate())return;await new Promise(r=>setTimeout(r,10))}throw Error('Review UI timed out')};

@@ -1,17 +1,15 @@
-# Generated report reader (6.3.0 development)
+# Generated report reader
 
-Download the matching [6.3.0-dev.5 preview](https://github.com/chuangchuangtan/codexview/releases/tag/v6.3.0-dev.5). The published 6.2.1 files remain available as the previous stable baseline.
-
-Last updated: 2026-11-03 (Asia/Shanghai). The large-report changes below describe the 6.3.0-dev.8 development build; the published download above is the earlier preview.
+Available in [LiteCodexView 6.3.0](https://github.com/chuangchuangtan/LiteCodexView/releases/tag/v6.3.0).
 
 Codex sessions often point to Markdown reports and HTML galleries saved on the server. Open these links in a separate browser tab while keeping the conversation available. Markdown supports headings, tables, code blocks and local report links. HTML uses an isolated, static preview; Read / Source and Refresh are available in the surrounding reader.
 
 ## Enable a project directory
 
-On a build containing this feature:
+Start the viewer with a project root:
 
 ```sh
-codexview serve --host 0.0.0.0 --port 80 --file-root /path/to/project/reports
+litecodexview serve --host 0.0.0.0 --port 80 --file-root /path/to/project/reports
 ```
 
 Use the session’s project working directory (`cwd`) when reports span several project subdirectories; do not point this option at the Codex session storage directory. Repeat `--file-root` for additional report directories. Stop an existing instance before changing its startup options. File reading is disabled when no roots are configured. A browser user can read supported files within the shared directories: choose narrow report folders, and use the same access protection as the session viewer.
@@ -35,7 +33,7 @@ Task density and reading-width presets are available in More actions. Sidebar an
 - Preview limits: Markdown 2 MiB, HTML 50 MiB, CSS 1 MiB and each raster image 16 MiB. Oversize files produce an explicit error; contents are never silently truncated.
 - Refresh reads saved content on demand. It does not follow unsaved editor buffers.
 
-The report reader adds no third-party runtime dependencies or report scans to session indexing. Version 6.3.0-dev.5 also adds optional search acceleration independently of report loading.
+The report reader adds no third-party runtime dependencies or report scans to session indexing. Optional search acceleration works independently of report loading.
 
 The session **Reports** menu collects up to 120 unique links from tasks already loaded. No full-session report scan is performed. Select a local image in Markdown to open a zoomable viewer. Static HTML has an **Images** menu for up to 80 local images; opening one retains a return link to the report and originating task. Raster files use the same configured roots, read-only path checks and 16 MiB limit. See [continuous reading](continuous-reading.md).
 

@@ -31,7 +31,7 @@ class ReleaseTests(unittest.TestCase):
         (self.root / 'artifacts/private.json').write_text('PRIVATE_MARKER', encoding='utf-8')
         (self.root / 'src/.DS_Store').write_bytes(b'PRIVATE_MARKER')
         self.root_patch = mock.patch.object(release, 'ROOT', self.root)
-        self.build_patch = mock.patch.object(release, 'build', lambda: self.root / 'codexview')
+        self.build_patch = mock.patch.object(release, 'build', lambda: self.root / 'litecodexview')
         self.root_patch.start()
         self.build_patch.start()
     def tearDown(self):
@@ -57,7 +57,7 @@ class ReleaseTests(unittest.TestCase):
         for line in (self.root / 'dist/SHA256SUMS').read_text().splitlines():
             digest, name = line.split('  ')
             self.assertEqual(hashlib.sha256((self.root / 'dist' / name).read_bytes()).hexdigest(), digest)
-        self.assertTrue((self.root / 'dist/codexview-0.1.0-source/LICENSE').exists())
+        self.assertTrue((self.root / 'dist/litecodexview-0.1.0-source/LICENSE').exists())
     def test_redirected_source_is_rejected(self):
         path = self.root / 'src/redirect.py'
         path.symlink_to(self.root / 'artifacts/private.json')

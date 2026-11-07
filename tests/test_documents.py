@@ -124,7 +124,7 @@ class DocumentTests(unittest.TestCase):
     def test_file_root_is_preserved_in_daemon_child(self):
         args=NS['parser']().parse_args(['serve','--codex-home',str(self.home),'--file-root',str(self.root),'--file-root',str(self.root)])
         self.assertEqual(args.file_root,[str(self.root),str(self.root)])
-        with mock.patch.dict(NS,{'__file__':str(Path('codexview').resolve()),'read_pid':mock.Mock(side_effect=[None,12345,12345]),'owned_open':mock.mock_open()}), mock.patch.object(NS['subprocess'],'Popen') as popen, mock.patch.object(NS['time'],'sleep'):
+        with mock.patch.dict(NS,{'__file__':str(Path('litecodexview').resolve()),'read_pid':mock.Mock(side_effect=[None,12345,12345]),'owned_open':mock.mock_open()}), mock.patch.object(NS['subprocess'],'Popen') as popen, mock.patch.object(NS['time'],'sleep'):
             NS['daemon'](args)
             command=popen.call_args[0][0]
             self.assertEqual(command.count('--file-root'),2)

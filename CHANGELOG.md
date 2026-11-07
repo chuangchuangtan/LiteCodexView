@@ -1,23 +1,12 @@
 # Changelog
 
-## 6.3.0-dev.8 — 2026-11-03 (unreleased)
+## 6.3.0 — 2026-11-07
 
-- Raise the HTML/HTM preview limit from 32 MiB to 50 MiB (52,428,800 bytes), including embedded base64 image data.
-- Preserve on-demand report loading, the 16 MiB decoded raster-image limit, source read-only checks and static HTML isolation.
-
-## 6.3.0-dev.7 — 2026-11-02 (unreleased)
-
-- Read self-contained HTML galleries up to 32 MiB; retain validated base64 PNG/JPEG/GIF/WebP images with a 16 MiB decoded image limit.
-- Keep HTML source out of preview JSON and fetch it only when Source is selected; preserve local-image navigation and sandbox restrictions.
-- Reject SVG/HTML data URLs, invalid base64, mismatched image signatures, scripts and out-of-root files.
-- Report files remain on demand and read-only; session discovery and indexing are unchanged.
-
-## 6.3.0-dev.6 — 2026-11-02 (unreleased)
-
-- Wrap long fenced text, JSON strings and unbroken tokens within the reader; retain source newlines, indentation and copy text.
-- Keep diff lines aligned with horizontal scrolling confined to the code block.
-- Resolve conversation styles overriding code-block overflow. Applies to both user and assistant messages; Markdown reports share the wrap rule.
-- No new runtime dependencies, requests or changes to native session discovery/indexing.
+- Rename the project to **LiteCodexView** and the standalone command to `litecodexview`. Existing review state and browser reading positions remain compatible.
+- Stabilize continuous scrolling and task selection, restore review actions and reading positions, and wrap long fenced text. Diff blocks retain horizontal scrolling.
+- Add on-demand Markdown and static HTML reports, reading progress indicators, and an optional session search cache.
+- Read HTML/HTM reports up to 50 MiB, including embedded base64 raster images. Each decoded image is limited to 16 MiB.
+- Keep native session discovery and read-only access to original Codex data, with no third-party runtime dependencies.
 
 ## 6.3.0-dev.5 — 2026-10-25 (Asia/Shanghai) — task window repair
 

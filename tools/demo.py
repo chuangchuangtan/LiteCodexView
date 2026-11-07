@@ -1,4 +1,4 @@
-"""Run a disposable, synthetic CodexView demo; never reads your Codex home."""
+"""Run a disposable, synthetic LiteCodexView demo; never reads your Codex home."""
 import argparse
 from datetime import datetime, timedelta, timezone
 import json
@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
     if args.tasks < 3:
         parser.error('--tasks must be at least 3')
-    module = runpy.run_path(str(ROOT / 'codexview'), run_name='codexview_demo')
+    module = runpy.run_path(str(ROOT / 'litecodexview'), run_name='codexview_demo')
     with tempfile.TemporaryDirectory(prefix='codexview-demo-') as temporary:
         home = Path(temporary).resolve()
         directory = home / 'sessions/2026/10/01'

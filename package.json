@@ -1,5 +1,5 @@
 {
-  "name": "codexview-dev",
+  "name": "litecodexview-dev",
   "private": true,
   "scripts": {
     "test": "node tests/test_frontend.mjs && node tests/test_ui_dom.cjs && node tests/test_file_dom.cjs && node tests/test_reading_dom.cjs && node tests/test_continuous_dom.cjs && node tests/test_review_dom.cjs && node tests/test_reader_window_dom.cjs"
@@ -7,9 +7,9 @@
   "devDependencies": {
     "jsdom": "30.1.3"
   },
-  "version": "6.3.0-dev.8",
+  "version": "6.3.0",
   "license": "MIT",
-  "description": "Development tests for the dependency-free CodexView runtime",
+  "description": "Development tests for the dependency-free LiteCodexView runtime",
   "engines": {
     "node": ">=22.22.2"
   }

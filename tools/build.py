@@ -19,7 +19,7 @@ def build():
         assert marker in s, marker
         s = s.replace(marker, repr(value))
     ast.parse(s)
-    out = ROOT/'codexview'
+    out = ROOT/'litecodexview'
     out.write_text(s,encoding='utf-8');out.chmod(0o755)
     return out
 if __name__=='__main__':

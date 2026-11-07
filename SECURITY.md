@@ -1,6 +1,6 @@
 # Security and privacy
 
-CodexView is a personal, self-hosted transcript reader. Keep the default loopback bind and use SSH forwarding, or configure an authenticated reverse proxy. It does not provide accounts, access control between users, TLS, or a sandbox for arbitrary local attackers.
+LiteCodexView is a personal, self-hosted transcript reader. Keep the default loopback bind and use SSH forwarding, or configure an authenticated reverse proxy. It does not provide accounts, access control between users, TLS, or a sandbox for arbitrary local attackers.
 
 Codex-owned sessions, rollouts, configuration and authentication files are opened read-only. The app neither executes transcript commands nor drives the Codex TUI. All runtime state, manifests and logs belong to `$CODEX_HOME/codexview`. Review notes are private data, not a disposable cache.
 

@@ -22,36 +22,36 @@ jobs:
       - name: Verify release version
         shell: bash
         run: |
-          version=$(python3 -c "import runpy; print(runpy.run_path('codexview', run_name='release')['VERSION'])")
+          version=$(python3 -c "import runpy; print(runpy.run_path('litecodexview', run_name='release')['VERSION'])")
           test "$GITHUB_REF_NAME" = "v$version"
           test -f "docs/releases/$GITHUB_REF_NAME.md"
           for readme in README.md README.zh-CN.md; do
-            grep -Fq "releases/download/v$version/codexview-$version" "$readme"
-            grep -Fq "cp codexview-$version " "$readme"
+            grep -Fq "releases/download/v$version/litecodexview-$version" "$readme"
+            grep -Fq "cp litecodexview-$version " "$readme"
           done
           echo "CODEXVIEW_VERSION=$version" >> "$GITHUB_ENV"
       - name: Build and test
         run: |
           python3 tools/build.py
-          git diff --exit-code -- codexview
+          git diff --exit-code -- litecodexview
           python3 -m unittest discover -s tests -v
           npm ci
           npm test
           python3 tools/package_release.py
           cd dist
           sha256sum -c SHA256SUMS
-      - name: Publish public preview
+      - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            "dist/codexview-$CODEXVIEW_VERSION" \
-            "dist/codexview-$CODEXVIEW_VERSION.zip" \
-            "dist/codexview-$CODEXVIEW_VERSION.tar.gz" \
-            "dist/codexview-$CODEXVIEW_VERSION.manifest.json" \
+            "dist/litecodexview-$CODEXVIEW_VERSION" \
+            "dist/litecodexview-$CODEXVIEW_VERSION.zip" \
+            "dist/litecodexview-$CODEXVIEW_VERSION.tar.gz" \
+            "dist/litecodexview-$CODEXVIEW_VERSION.manifest.json" \
             dist/SHA256SUMS \
             --verify-tag \
-            --title "CodexView $CODEXVIEW_VERSION · Public Preview" \
-            --prerelease \
+            --title "LiteCodexView $CODEXVIEW_VERSION" \
+            --latest \
             --notes-file "docs/releases/$GITHUB_REF_NAME.md"

@@ -2,7 +2,7 @@
 // CODEXVIEW_JSDOM_MODULE=/tmp/codexview-dom-tests/node_modules/jsdom node tests/test_ui_dom.cjs
 const {JSDOM,VirtualConsole}=require(process.env.CODEXVIEW_JSDOM_MODULE||'jsdom');
 const {spawnSync}=require('node:child_process');const assert=require('node:assert/strict');
-const source=process.env.CODEXVIEW_TEST_SOURCE||'codexview';
+const source=process.env.CODEXVIEW_TEST_SOURCE||'litecodexview';
 const html=spawnSync('python3',['-c',`import pathlib; n={'__name__':'test'}; exec(compile(pathlib.Path(${JSON.stringify(source)}).read_text(),'fast','exec'),n); print(n['workspace_html']('fixture',{'adapter':'native-jsonl','tasks':[]},{'tasks':{}},[],[]))`],{encoding:'utf8'});
 assert.equal(html.status,0,html.stderr);let calls=[],errors=[],scrolls=0;
 const vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!e.message.includes('CSS'))errors.push(e.message)});
