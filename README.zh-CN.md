@@ -3,7 +3,7 @@
   <p><strong>上千轮长会话，也能清晰回看。</strong></p>
   <p>终端继续执行，浏览器按任务阅读、搜索、定位。</p>
   <p><code>1,000+ 轮对话</code> · <code>按需加载</code> · <code>单文件部署</code> · <code>严格只读</code></p>
-  <p><a href="https://github.com/chuangchuangtan/codexview/releases/tag/v6.3.0">下载当前版本</a> · <a href="README.md">English</a> · <a href="LICENSE">MIT 许可证</a></p>
+  <p><a href="https://github.com/chuangchuangtan/LiteCodexView/releases/tag/v6.3.0">下载当前版本</a> · <a href="README.md">English</a> · <a href="LICENSE">MIT 许可证</a></p>
 </div>
 
 LiteCodexView 是为**数百至上千轮长会话**设计的轻量 Codex CLI 阅读器。将本机或远程服务器上的对话、工具执行与 Markdown / HTML 报告整理为清晰的网页，方便回看完整过程、查找关键结论、接着上次的位置阅读。
@@ -41,7 +41,7 @@ LiteCodexView 是为**数百至上千轮长会话**设计的轻量 Codex CLI 阅
 
 支持 Linux 和 macOS，需要 Python 3.7 或更新版本。推荐使用仍受维护的 Python。Windows 暂未验证。
 
-下载发布文件 **[litecodexview-6.3.0](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/litecodexview-6.3.0)**，在下载目录打开终端，依次执行：
+下载发布文件 **[litecodexview-6.3.0](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/litecodexview-6.3.0)**，在下载目录打开终端，依次执行：
 
 ```sh
 mkdir -p "$HOME/.local/bin"
@@ -157,8 +157,8 @@ Codex 原始 session、rollout、config、auth 数据严格只读，Native 会�
 
 ## 其他下载
 
-- [ZIP](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/litecodexview-6.3.0.zip) / [tar.gz](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/litecodexview-6.3.0.tar.gz)：完整源码和文档。
-- [SHA256SUMS](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/SHA256SUMS)：发布文件的 SHA-256 校验值。
+- [ZIP](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/litecodexview-6.3.0.zip) / [tar.gz](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/litecodexview-6.3.0.tar.gz)：完整源码和文档。
+- [SHA256SUMS](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/SHA256SUMS)：发布文件的 SHA-256 校验值。
 
 采用 [MIT License](LICENSE)。更多信息：[安全说明](SECURITY.md) · [参与贡献](CONTRIBUTING.md)。
 

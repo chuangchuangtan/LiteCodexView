@@ -1,6 +1,6 @@
 # Generated report reader
 
-Available in [LiteCodexView 6.3.0](https://github.com/chuangchuangtan/codexview/releases/tag/v6.3.0).
+Available in [LiteCodexView 6.3.0](https://github.com/chuangchuangtan/LiteCodexView/releases/tag/v6.3.0).
 
 Codex sessions often point to Markdown reports and HTML galleries saved on the server. Open these links in a separate browser tab while keeping the conversation available. Markdown supports headings, tables, code blocks and local report links. HTML uses an isolated, static preview; Read / Source and Refresh are available in the surrounding reader.
 

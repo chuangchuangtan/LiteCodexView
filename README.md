@@ -3,7 +3,7 @@
   <p><strong>Thousands of turns. Clear context.</strong></p>
   <p>Keep the work running in your terminal. Read, search and navigate in your browser.</p>
   <p><code>1,000+ turns</code> · <code>On-demand loading</code> · <code>Single file</code> · <code>Read-only</code></p>
-  <p><a href="https://github.com/chuangchuangtan/codexview/releases/tag/v6.3.0">Download</a> · <a href="README.zh-CN.md">中文说明</a> · <a href="LICENSE">MIT License</a></p>
+  <p><a href="https://github.com/chuangchuangtan/LiteCodexView/releases/tag/v6.3.0">Download</a> · <a href="README.zh-CN.md">中文说明</a> · <a href="LICENSE">MIT License</a></p>
 </div>
 
 LiteCodexView is a lightweight Codex CLI reader built for **hundreds to thousands of conversation turns**. Browse conversations, tool execution and Markdown / HTML reports from your machine or a remote server, find earlier decisions in context, and continue where you stopped reading.
@@ -41,7 +41,7 @@ Browser reading is independent of the Codex CLI execution instance. LiteCodexVie
 
 Supports Linux and macOS with Python 3.7 or newer. Use a maintained Python version for new installations. Windows has not been validated.
 
-Download **[litecodexview-6.3.0](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/litecodexview-6.3.0)**, open a terminal in the download directory, and run:
+Download **[litecodexview-6.3.0](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/litecodexview-6.3.0)**, open a terminal in the download directory, and run:
 
 ```sh
 mkdir -p "$HOME/.local/bin"
@@ -157,8 +157,8 @@ First-time search of very large files can take several seconds; results are limi
 
 ## Other downloads
 
-- [ZIP](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/litecodexview-6.3.0.zip) / [tar.gz](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/litecodexview-6.3.0.tar.gz): full source and documentation.
-- [SHA256SUMS](https://github.com/chuangchuangtan/codexview/releases/download/v6.3.0/SHA256SUMS): SHA-256 checksums for release assets.
+- [ZIP](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/litecodexview-6.3.0.zip) / [tar.gz](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/litecodexview-6.3.0.tar.gz): full source and documentation.
+- [SHA256SUMS](https://github.com/chuangchuangtan/LiteCodexView/releases/download/v6.3.0/SHA256SUMS): SHA-256 checksums for release assets.
 
 Released under the [MIT License](LICENSE). See [Security](SECURITY.md) and [Contributing](CONTRIBUTING.md) for more information.
 
